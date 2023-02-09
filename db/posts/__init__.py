@@ -1,0 +1,1 @@
+from .posts_db import Posts, Categories
