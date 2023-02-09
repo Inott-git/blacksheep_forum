@@ -1,53 +1,25 @@
 from sqlalchemy import *
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.automap import automap_base
-import bcrypt
-
-
-class Users:
-
-    def __init__(self, session, user, post, category, like, comment):
-        self.User = user
-        self.Post = post
-        self.Category = category
-        self.Like = like
-        self.Comment = comment
-
-        self.session = session
-
-
-    def add_user(self, login, password):
-        login = login
-        password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
-        self.session.add(self.User(login=login, password=password))
-        self.session.commit()
-
-
-    def change_user(self, id, login, password):
-        stmt = select(self.User).where(self.User.id == id)
-        user = self.session.scalar(stmt)
-        user.login, user.password = login, password
-        self.session.commit()
-
-    def check_password(self, id, password):
-        stmt = select(self.User).where(self.User.id == id)
-        user = self.session.scalar(stmt)
-        bcrypt.checkpw(password.encode(), user.password)
+from users import Users
+from posts import Posts, Categories
 
 
 class DataBase:
 
     def __init__(self, db_path):
-        self.engine = create_engine(f'sqlite:///{db_path}')
-        self.Base = automap_base()
-        self.Base.prepare(autoload_with=self.engine)
+        self._engine = create_engine(f'sqlite:///{db_path}')
+        self._Base = automap_base()
+        self._Base.prepare(autoload_with=self._engine)
 
-        self.User = self.Base.classes.users
-        self.Post = self.Base.classes.posts
-        self.Category = self.Base.classes.categories
-        self.Like = self.Base.classes.likes
-        self.Comment = self.Base.classes.comments
+        self._User = self._Base.classes.users
+        self._Post = self._Base.classes.posts
+        self._Category = self._Base.classes.categories
+        self._Like = self._Base.classes.likes
+        self._Comment = self._Base.classes.comments
 
-        self.session = Session(self.engine)
+        self._session = Session(self._engine)
 
-        self.Users = Users(self.session, self.User, self.Post, self.Category, self.Like, self.Comment)
+        self.Users = Users(self._session, self._User, self._Post, self._Category, self._Like, self._Comment)
+        self.Posts = Posts(self._session, self._User, self._Post, self._Category, self._Like, self._Comment)
+        self.Categories = Categories(self._session, self._Category)
