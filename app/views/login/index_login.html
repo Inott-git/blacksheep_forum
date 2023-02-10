@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Nice dark sign in form</title>
+  
+  
+      {% block css %}
+      <link rel="stylesheet" href="css/styles_1.css">
+      {% endblock %}
+  
+</head>
+
+<body>
+  <h1>Sign In Form</h1>
+<div id="wrapper">
+	<form id="signin" method="post" action="login/" autocomplete="off">
+		<input type="text" id="user" name="login" placeholder="username" />
+		<input type="password" id="pass" name="password" placeholder="password" />
+		<button type="submit">&#xf0da;</button>
+		<p>Not registred? <a href="/register">Register</a></p>
+	</form>
+</div>
+  
+  
+</body>
+</html>

@@ -1,23 +1,44 @@
-from blacksheep.server.controllers import Controller, get
-from config_server import app, view, db
-from blacksheep import Response, Request, FromJSON, FromForm, redirect
+from blacksheep import redirect
+from blacksheep.server.application import Application
+from blacksheep.server.controllers import Controller, get, post
+from blacksheep.messages import Response, Request
+from db import haching_password
+import db
+from db import db_connect
 
 
 class Login(Controller):
 
-    @app.router.get('/')
+    @get('/login')
     async def login_index(self):
-        return view('login', {})
+        return self.view('index_login')
 
-    @app.router.post('/login')
+    @get('/register')
+    async def reg_index(self):
+        return self.view('index_reg')
+
+    @post('/login')
     async def login(requst: Request):
         data = await requst.form()
-
-        check = db.Users.check_password(data['login'], data['password'])
+        check = db_connect.Users.check_password(data['login'], data['password'])
         if check == True:
             return redirect('/login')
         else:
             return redirect('/')
+
+    @post('/reg')
+    async def register(requst: Request):
+        data = await requst.form()
+        login = data['login']
+        print(login)
+        password = haching_password.hash_password(data['password'])
+
+        if data['password'] == data['r_password']:
+            db_connect.Users.add_user(login, password)
+            return redirect('/login')
+        else:
+            return redirect('/register')
+
 
 
 

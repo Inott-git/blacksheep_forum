@@ -1,1 +1,1 @@
-from db.db_service import DataBase
+from db.db_service import db_connect

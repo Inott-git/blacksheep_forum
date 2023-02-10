@@ -1,8 +1,8 @@
 from sqlalchemy import *
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.automap import automap_base
-from users import Users
-from posts import Posts, Categories
+from db.users import Users
+from db.posts import Posts, Categories
 
 
 class DataBase:
@@ -23,3 +23,5 @@ class DataBase:
         self.Users = Users(self._session, self._User, self._Post, self._Category, self._Like, self._Comment)
         self.Posts = Posts(self._session, self._User, self._Post, self._Category, self._Like, self._Comment)
         self.Categories = Categories(self._session, self._Category)
+
+db_connect = DataBase('db/database.db')
