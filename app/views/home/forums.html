@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+</head>
+<body>
+    {% block more %}
+    <div class="container">
+        {% for cat in category %}
+        <div class="subforum">
+            <div class="subforum-title">
+                <h1>{{ cat[0] }}</h1>
+            </div>
+            {% for item in data %}
+            {% if item[4] == cat[0] %}
+                <div class="subforum-row">
+                    <div class="subforum-icon subforum-column center">
+                        <i class="fa fa-file-code-o center"></i>
+                    </div>
+                    <div class="subforum-description subforum-column">
+                        <h4><a href="#">{{ item[0] }}</a></h4>
+                        <p>{{ item[1] }}</p>
+                    </div>
+                    <div class="subforum-stats subforum-column center">
+                        <span></span>
+                    </div>
+                    <div class="subforum-info subforum-column">
+                        <b><a href="">Last post</a></b> by <a href=""> {{ item[3] }} </a>
+                        <br>on <small> {{ item[2] }} </small>
+                    </div>
+                </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endblock %}
+    <script src="js/main.js"></script>
+</body>
+</html>

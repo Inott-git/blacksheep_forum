@@ -13,7 +13,9 @@ class Posts:
         self.session = session
 
     def get_all_posts(self):
-        return self.session.scalar(select(self.Post))
+        stmt = select(self.Post.title, self.Post.description, self.Post.time_post, self.User.login, self.Category.title).join_from(self.Post, self.User).join_from(self.Post, self.Category)
+        data = self.session.execute(stmt).all()
+        return data
 
     def add_post(self, user_id, title, description, categories_id):
         self.session.add(self.Post(user_id=user_id, title=title, description=description, time_post=datetime.datetime.now(), categories_id=categories_id))
@@ -37,8 +39,13 @@ class Categories:
 
         self.session = session
 
+    def get_category_by_id(self, id):
+        return self.session.scalar(select(self.Category).where(self.Category.id==id))
+
     def get_all_categories(self):
-        return self.session.scalar(select(self.Category))
+        data = self.session.execute(select(self.Category.title)).all()
+        print(data)
+        return data
 
     def add_category(self, title):
         self.session.add(self.Category(title=title))
