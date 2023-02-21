@@ -28,7 +28,8 @@ class Users:
     def check_password(self, login, password):
         stmt = select(self.User).where(self.User.login == login)
         user = self.session.scalar(stmt)
+        check = bcrypt.checkpw(password.encode(), user.password)
         if user != None:
-            return bcrypt.checkpw(password.encode(), user.password)
+            return True
         else:
             return False

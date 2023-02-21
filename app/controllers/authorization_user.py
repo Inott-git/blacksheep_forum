@@ -1,36 +1,50 @@
-from blacksheep import redirect
-from blacksheep.server.application import Application
+from typing import Optional
+from blacksheep.server.authentication.oidc import CookiesTokensStore
+from guardpost.common import AuthenticatedRequirement
+
+from blacksheep import redirect, json
 from blacksheep.server.controllers import Controller, get, post
-from blacksheep.messages import Response, Request
+from blacksheep.messages import Request, Response
+from guardpost import Identity, Policy, authorization
+
 from db import haching_password
-import db
+
 from db import db_connect
 
 
 class Login(Controller):
 
     @get('/login')
-    async def login_index(self):
+    async def login_index(self, request: Request):
+
         return self.view('index_login')
 
     @get('/register')
     async def reg_index(self):
         return self.view('index_reg')
 
-    @post('/login')
-    async def login(requst: Request):
-        data = await requst.form()
+    @post('/sing')
+    async def login(self, requstt: Request) -> Response:
+        data = await requstt.form()
+        print(data['login'], data['password'])
         check = db_connect.Users.check_password(data['login'], data['password'])
-        if check == True:
-            return redirect('/login')
+
+        if check:
+            response = self.redirect('/')
+            auth = CookiesTokensStore()
+
+            auth.set_cookie(response, f'{data["login"]}', '123', secure=True)
         else:
-            return redirect('/')
+            response = self.redirect('/login')
+        return response
+
+
 
     @post('/reg')
     async def register(requst: Request):
         data = await requst.form()
         login = data['login']
-        print(login)
+
         password = haching_password.hash_password(data['password'])
 
         if data['password'] == data['r_password']:

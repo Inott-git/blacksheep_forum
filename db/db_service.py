@@ -4,7 +4,6 @@ from sqlalchemy.ext.automap import automap_base
 from db.users import Users
 from db.posts import Posts, Categories
 
-
 class DataBase:
 
     def __init__(self, db_path):

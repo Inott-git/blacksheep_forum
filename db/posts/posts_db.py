@@ -44,7 +44,6 @@ class Categories:
 
     def get_all_categories(self):
         data = self.session.execute(select(self.Category.title)).all()
-        print(data)
         return data
 
     def add_category(self, title):
