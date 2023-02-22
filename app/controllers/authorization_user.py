@@ -1,4 +1,6 @@
 from typing import Optional
+from app.auth import auth
+from blacksheep.server.authentication.cookie import CookieAuthentication
 from blacksheep.server.authentication.oidc import CookiesTokensStore
 from guardpost.common import AuthenticatedRequirement
 
@@ -31,14 +33,20 @@ class Login(Controller):
 
         if check:
             response = self.redirect('/')
-            auth = CookiesTokensStore()
+            # auth = CookiesTokensStore()
 
-            auth.set_cookie(response, f'{data["login"]}', '123', secure=True)
+            auth.set_cookie(f'{data["login"]}', response,  secure=True)
+
         else:
             response = self.redirect('/login')
         return response
 
+    @post('/log_out')
+    async def logout(self, request: Request) -> Response:
 
+        respounce = self.redirect('/')
+        auth.unset_cookie(respounce)
+        return respounce
 
     @post('/reg')
     async def register(requst: Request):
