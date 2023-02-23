@@ -23,6 +23,6 @@ def configure_application() -> Application:
 
     app.on_start += before_start
     configure_templating(app)
-    configure_templating(app)
+    configure_authentication(app)
     app.serve_files("app/static")
     return app
