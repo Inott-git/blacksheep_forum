@@ -31,9 +31,6 @@ class ExampleAuthHandler(CookieAuthentication):
         return context.identity
 
     def set_cookies(self, data: Any, response: Response, secure: bool = False) -> None:
-
-
-
         response.set_cookie(
             Cookie(
                 'identity',
@@ -45,20 +42,21 @@ class ExampleAuthHandler(CookieAuthentication):
                 expires=datetime.fromtimestamp(data["exp"]) if "exp" in data else None,
             )
         )
-class AdminRequirement(Requirement):
-    def handle(self, context: AuthorizationContext):
-        identity = context.identity
-        print(identity.claims)
-        if identity is not None and identity.claims.get("role") == "admin":
-            context.succeed(self)
+
+    def handle(self, context: Request):
+        identity = context.cookies
+        print(identity)
+        if identity != {}:
+            if identity['identity'] == "admin":
+                return True
+            else:
+                return False
+        else:
+            return False
 
 
-class AdminPolicy(Policy):
-    def __init__(self):
-        super().__init__("admin", AdminRequirement())
+
 
 def configure_authentication(app):
     app.use_authentication().add(CookieAuthentication())
-    app.use_authorization().add(
-        AdminPolicy()
-    )
+

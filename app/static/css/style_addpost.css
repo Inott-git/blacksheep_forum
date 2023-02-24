@@ -1,0 +1,17 @@
+.main_div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+html {
+    background: #2C2C2C;
+}
+.sumbit {
+    color: #FEFEFE;
+    font-size: 15px;
+    border: 0;
+    background: #2C2C2C;
+}
+.titles{
+    color: #FEFEFE;
+}

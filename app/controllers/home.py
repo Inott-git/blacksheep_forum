@@ -1,6 +1,6 @@
 from typing import Optional, Union
 from app.auth import ExampleAuthHandler
-from blacksheep.server.authorization import Policy, auth
+from blacksheep.server.authorization import Policy
 from blacksheep import redirect, FromCookie, text, Cookie
 from blacksheep.server.authentication.cookie import CookieAuthentication
 from blacksheep.server.controllers import Controller, get, post
@@ -9,14 +9,14 @@ from guardpost import Identity, User
 
 
 from db import db_connect
-
+auth = ExampleAuthHandler()
 
 class Home(Controller):
 
     @get('/')
     async def index(self, request: Request, user: Optional[Identity]):
-        authh = ExampleAuthHandler()
-        await authh.authenticate(request)
+
+        await auth.authenticate(request)
         user = None
         data = db_connect.Posts.get_all_posts()
         category = db_connect.Categories.get_all_categories()
@@ -26,7 +26,5 @@ class Home(Controller):
         else:
             return self.view('forums', {'user': None, 'data': data, 'category': category})
 
-    @auth('admin')
-    @get('/admin')
-    async def adminchik(self):
-        return '123'
+
+

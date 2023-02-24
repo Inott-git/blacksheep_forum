@@ -33,3 +33,8 @@ class Users:
             return True
         else:
             return False
+
+    def get_id(self, login):
+        stmt = select(self.User).where(self.User.login == login)
+        user = self.session.scalar(stmt)
+        return user.id

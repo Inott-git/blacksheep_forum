@@ -40,7 +40,10 @@ class Categories:
         self.session = session
 
     def get_category_by_id(self, id):
-        return self.session.scalar(select(self.Category).where(self.Category.id==id))
+        return self.session.scalar(select(self.Category).where(self.Category.id==id)).login
+
+    def get_id(self, title):
+        return self.session.scalar(select(self.Category).where(self.Category.title == title)).id
 
     def get_all_categories(self):
         data = self.session.execute(select(self.Category.title)).all()

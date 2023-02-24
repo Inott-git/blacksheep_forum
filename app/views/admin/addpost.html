@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="css/style_addpost.css">
+</head>
+<body>
+    <div class="main_div">
+        <form method="post" action="/admin">
+                <p class="titles">Выберите категорию</p>
+                <select name='cat' class="select_cat">
+                    {% for i in category %}
+                    <option value={{i[0]}}>{{i[0]}}</option>
+                    {% endfor %}
+                </select>
+            <p><input type="text" id="user" name="title" placeholder="Title" class="inputs"/></p>
+		    <p><textarea type="text" id="inputs_big" name="description" placeholder="Text"></textarea></p>
+		    <button type="submit" class="sumbit">Отправить</button>
+        </form>
+    </div>
+</body>
+</html>

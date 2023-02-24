@@ -13,6 +13,7 @@ from db import haching_password
 
 from db import db_connect
 
+auth = ExampleAuthHandler()
 
 class Login(Controller):
 
@@ -34,8 +35,8 @@ class Login(Controller):
         if check:
             response = self.redirect('/')
             # auth = CookiesTokensStore()
-            authhh = ExampleAuthHandler()
-            authhh.set_cookies(f'{data["login"]}', response,  secure=True)
+
+            auth.set_cookies(f'{data["login"]}', response,  secure=True)
 
         else:
             response = self.redirect('/login')
@@ -43,9 +44,9 @@ class Login(Controller):
 
     @post('/log_out')
     async def logout(self, request: Request) -> Response:
-        authh = ExampleAuthHandler()
+
         respounce = self.redirect('/')
-        authh.unset_cookie(respounce)
+        auth.unset_cookie(respounce)
         return respounce
 
     @post('/reg')
