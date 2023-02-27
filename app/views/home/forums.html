@@ -27,7 +27,7 @@
                     </div>
                     <div class="subforum-info subforum-column">
                         <b><a href="">Last post</a></b> by <a href=""> {{ item[3] }} </a>
-                        <br>on <small> {{ item[2] }} </small>
+                        <br>on <small> {{ item[2].strftime('%Y:%m:%d %H:%M') }} </small>
                     </div>
                 </div>
             {% endif %}

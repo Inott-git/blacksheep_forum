@@ -17,8 +17,8 @@ class Posts:
         data = self.session.execute(stmt).all()
         return data
 
-    def add_post(self, user_id, title, description, categories_id):
-        self.session.add(self.Post(user_id=user_id, title=title, description=description, time_post=datetime.datetime.now(), categories_id=categories_id))
+    def add_post(self, user_id, title, description, cat_id):
+        self.session.add(self.Post(user_id=user_id, title=title, description=description, time_post=datetime.datetime.now(), categories_id=cat_id))
         self.session.commit()
 
     def change_post(self, id, title, description, categories_id):
@@ -43,7 +43,9 @@ class Categories:
         return self.session.scalar(select(self.Category).where(self.Category.id==id)).login
 
     def get_id(self, title):
-        return self.session.scalar(select(self.Category).where(self.Category.title == title)).id
+        stmt = select(self.Category).where(self.Category.title == title)
+        cat = self.session.scalar(stmt)
+        return cat.id
 
     def get_all_categories(self):
         data = self.session.execute(select(self.Category.title)).all()
