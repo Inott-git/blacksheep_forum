@@ -128,8 +128,12 @@
 
             </style>
             <div class="heh">
-                <a href="/admin">1</a>
+
             {% if user %}
+                {% if user=='admin' %}
+                    <a href="/add_cat">Добавить категорию</a>
+                {% endif %}
+                <a href="/add_post">Добавить пост</a>
                 <form action="/log_out" method="post">
                     <button class="buttonchik" type="submit" value="out">
                         Выйти
